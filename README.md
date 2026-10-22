@@ -1,55 +1,47 @@
 # Heat Risk Map
 
-An open-source web map that shows the **heat index** (the "feels like" heat danger level) for towns across Central Visayas, with a slider to look up to 48 hours ahead. Built for the El Niño heat season. Weather forecasts need no API key or backend; the optional AI assistant connects directly to a local model.
+An open-source web map of the **heat index** (the "feels like" heat danger level) for towns across Central Visayas, Philippines. Use the forecast slider to explore conditions up to 48 hours ahead.
+
+## Features
+
+- Town-level heat-index forecasts from Open-Meteo, displayed on a Leaflet map and in a place-by-place conditions panel.
+- PAGASA-style heat categories and a forecast-hour slider.
+- Optional AI heat-safety assistant, powered by a Cloudflare Worker and Workers AI.
+- Manual direct-sun exposure timer with configurable break reminders.
+- Compact navigation that hides when idle and reveals on hover, keyboard focus, or tap.
 
 ## How it works
 
-1. `js/config.js` lists the places to show.
-2. `js/app.js` asks the [Open-Meteo](https://open-meteo.com/) forecast API for hourly temperature and relative humidity for every place in one request.
-3. `js/heatindex.js` converts those two values into a heat index with the NWS Rothfusz regression and maps it to PAGASA-style categories.
-4. Leaflet draws a colored marker per place; the slider changes the hour.
-5. The map refreshes weather data every five minutes, and again when the page becomes visible or the network reconnects. It uses Open-Meteo's current temperature and humidity for the current reading; its model data is not a live local sensor feed.
-6. The map includes an optional manual direct-sun timer with configurable break reminders. Start and pause it as your exposure changes. The timer does not detect sunlight or personal conditions; reminders are not medical safety thresholds.
-7. The map's heat safety assistant can send a question and the selected-hour heat forecast to an OpenAI-compatible local chat API.
-
-## Local AI assistant
-
-The assistant is configured in `js/config.js` under `CONFIG.AI`. The default `API_URL` uses the local OpenAI-compatible endpoint at `http://localhost:1234/v1/chat/completions`. Set `MODEL` to the model name your local server expects, and optionally replace `API_KEY` if it requires one. The model name and API key are placeholders.
-
-The API key is used by the browser and is not secret. Use this only with a local model endpoint you control. Your questions and forecast context are sent to that endpoint. The assistant offers general forecast guidance, not official warnings or a guarantee of safety; always follow PAGASA advisories and school guidance.
-
-If the assistant cannot connect, check that the local model server allows browser CORS requests from the map's origin (for example, `http://127.0.0.1:8000`) and responds to `OPTIONS` preflight requests. `localhost` and `127.0.0.1` are different browser origins. The server must also support `POST /v1/chat/completions`.
+1. `js/config.js` defines the map center, timezone, and places.
+2. `js/app.js` requests hourly temperature and relative humidity from the [Open-Meteo forecast API](https://open-meteo.com/).
+3. `js/heatindex.js` calculates heat index using the NWS Rothfusz regression and maps it to PAGASA-style categories.
+4. Leaflet displays the forecast; the slider changes the selected hour.
+5. Forecast data refreshes every five minutes, when the page becomes visible, and when the network reconnects. Open-Meteo uses weather models; it is not a live local sensor feed.
+6. The optional exposure timer is manual. It does not detect sunlight or personal conditions, and its reminders are not medical safety thresholds.
+7. The AI assistant sends the selected forecast context and conversation to the configured Cloudflare Worker. The Worker calls Workers AI and returns a short reply.
 
 ## Run locally
 
-Do not open `index.html` or `map.html` directly from your file system (`file://`).
-Browsers block the weather API request from local files. In VS Code, install the
-**Live Server** extension, then right-click `index.html` and select **Open with
-Live Server**. The root page redirects to `map.html`; the map will be served from
-a local address such as `http://127.0.0.1:5500`.
+Do not open `index.html` or `map.html` directly from `file://`; browsers block the weather API request from local files.
+
+In VS Code, you can install the **Live Server** extension, right-click `index.html`, and select **Open with Live Server**.
 
 Alternatively, if Python is installed, run this from the project folder:
 
-```
+```sh
 python -m http.server 8000
 ```
 
-Then open http://localhost:8000 in your browser; it redirects to the map.
+Open <http://localhost:8000>; the root page redirects to the map. The AI proxy configuration allows common local origins on ports `8000` and `5500`. If you use a different port or host, add its exact origin to `ALLOWED_ORIGINS` in `heat-ai-proxy/wrangler.jsonc`, then redeploy the Worker.
 
 ## Deploy
 
-Push to GitHub, then Settings → Pages → deploy from the `main` branch (root).
+- **Website:** publish the repository root with GitHub Pages from the `main` branch. In GitHub, open **Settings → Pages**, choose **Deploy from a branch**, then select `main` and `/ (root)`.
+- **AI assistant:** deploy the separate Cloudflare Worker in `heat-ai-proxy`. See the [deployment guide](docs/DEPLOYMENT.md) for setup, origin configuration, verification, and troubleshooting.
 
-## Validate the formula
+The map works without the AI assistant. If you fork this project, update the Worker origin allowlist to your own GitHub Pages origin before deploying it.
 
-```
-node scripts/compare.js
-pip install metpy
-python scripts/validate_metpy.py
-```
-The two tables should match closely. Use inputs at or above about 27°C; below that, this project uses a simpler formula while MetPy does not.
-
-## Categories (heat index, °C)
+## Heat-index categories (°C)
 
 | Range | Category |
 |---|---|
@@ -59,26 +51,16 @@ The two tables should match closely. Use inputs at or above about 27°C; below t
 | 42–51 | Danger |
 | 52+ | Extreme Danger |
 
-## Limitations
+## Limitations and safety
 
-- Open-Meteo data comes from weather models with a grid several kilometers wide, so this is a town-level forecast, not block-level. Real street-level differences need sensors or satellite data (see the roadmap).
-- Forecasts are estimates. Always follow official PAGASA advisories.
+- Open-Meteo data comes from weather models with grid cells several kilometers wide. These are town-level estimates, not block-level measurements.
+- Forecasts can differ from actual conditions. Follow official [PAGASA](https://www.pagasa.dost.gov.ph/) advisories and school or workplace guidance.
+- The AI assistant provides general forecast guidance, not medical advice, official warnings, or a guarantee that an activity is safe. Do not rely on it for emergency decisions.
 
 ## Data and attribution
 
-Weather data by [Open-Meteo.com](https://open-meteo.com/). Their free API is for non-commercial / open-source use; read their terms before changing how this is used. Map tiles © OpenStreetMap contributors.
-
-## Roadmap (good first issues)
-
-- Add more municipalities and barangays
-- Cebuano / Filipino interface
-- 7-day forecast view
-- Historical "Danger hours" per town using the Open-Meteo archive API
-- Telegram alerts via a scheduled GitHub Action
-- Land-cover / tree-cover heat exposure layer (OpenStreetMap or satellite land surface temperature)
-- CSV export
-- Compare against official PAGASA heat index values
+Weather data by [Open-Meteo.com](https://open-meteo.com/). Its free API is for non-commercial and open-source use; review its terms before changing how the data is used. Map tiles © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright). Maps powered by [Leaflet](https://leafletjs.com/).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Licensed under MIT.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Good first contributions include adding places, translating the interface to Cebuano or Filipino, adding a longer forecast view, and improving accessibility. Licensed under MIT.
