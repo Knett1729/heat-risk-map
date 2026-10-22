@@ -6,6 +6,7 @@ Notable user-facing and contributor-facing project changes are recorded here. Th
 
 ### Added
 
+- Vercel static-site deployment with a production live URL.
 - Optional Cloudflare Workers AI heat-safety assistant and its server-side proxy.
 - Collapsible, keyboard-accessible navigation.
 - Topic-based documentation for architecture, forecasts, AI scope, interface, requirements, releases, licensing, and demonstrations.
@@ -14,6 +15,7 @@ Notable user-facing and contributor-facing project changes are recorded here. Th
 ### Changed
 
 - Expanded the README and contribution guide to describe current behavior, setup, verification, deployment, and safety limits.
+- Allowed the Vercel production origin to call the Cloudflare AI Worker.
 
 ### Removed
 

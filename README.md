@@ -2,6 +2,8 @@
 
 An open-source web map of the **heat index** (the "feels like" heat danger level) for towns across Central Visayas, Philippines. Use the forecast slider to explore conditions up to 48 hours ahead.
 
+**Live site:** [heat-risk-map.vercel.app](https://heat-risk-map.vercel.app/)
+
 ## Features
 
 - Town-level heat-index forecasts from Open-Meteo, displayed on a Leaflet map and in a place-by-place conditions panel.
@@ -42,10 +44,10 @@ Questions, recent conversation entries, and the selected forecast context are se
 
 ## Deploy
 
-- **Website:** publish the repository root with GitHub Pages from the `main` branch. In GitHub, open **Settings → Pages**, choose **Deploy from a branch**, then select `main` and `/ (root)`.
+- **Website:** deploy this repository on Vercel as a static site with the project root as its root directory, no build command, and `.` as the output directory. The included `vercel.json` sends the root URL to the map. The `.vercelignore` file keeps documentation and the separate Worker source out of the website deployment.
 - **AI assistant:** deploy the separate Cloudflare Worker in `heat-ai-proxy`. See the [deployment guide](docs/DEPLOYMENT.md) for setup, origin configuration, verification, and troubleshooting.
 
-The map works without the AI assistant. If you fork this project, update the Worker origin allowlist to your own GitHub Pages origin before deploying it.
+The map works without the AI assistant. After Vercel assigns your project a production domain, add that exact origin (scheme and hostname, no path or trailing slash) to `ALLOWED_ORIGINS` in `heat-ai-proxy/wrangler.jsonc`, then redeploy the Worker. If you fork this project, use your own Vercel domain.
 
 ## Project documentation
 

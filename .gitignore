@@ -1,6 +1,7 @@
 .DS_Store
 node_modules/
 __pycache__/
+.vercel/
 
 # wrangler files
 .wrangler
@@ -8,3 +9,5 @@ __pycache__/
 !.dev.vars.example
 .env*
 !.env.example
+
+.vercel
