@@ -32,6 +32,14 @@ python -m http.server 8000
 
 Open <http://localhost:8000>; the root page redirects to the map. The AI proxy configuration allows common local origins on ports `8000` and `5500`. If you use a different port or host, add its exact origin to `ALLOWED_ORIGINS` in `heat-ai-proxy/wrangler.jsonc`, then redeploy the Worker.
 
+## AI assistant scope
+
+The optional AI assistant provides brief, general heat-safety guidance about the map's Central Visayas forecast. It receives the selected forecast hour, model-based readings for the configured towns, and up to eight recent user/assistant message entries. It can summarize the supplied heat-index values and suggest general precautions such as water, shade, rest breaks, or planning activities for cooler hours.
+
+The map calculates the forecast heat index; the AI does not calculate or update the map's readings. It does not fetch live weather, detect a user's location or exposure, measure conditions at a specific street or school, assess an individual's health, diagnose or treat illness, issue official warnings, or decide that an activity is safe. It may make mistakes or give incomplete answers. For severe symptoms, seek emergency medical help; follow official PAGASA advisories and school or workplace guidance.
+
+Questions, recent conversation entries, and the selected forecast context are sent to the configured Cloudflare Worker and Workers AI to generate a reply. Do not include sensitive personal or medical information. The assistant is optional; map forecasts do not depend on it.
+
 ## Deploy
 
 - **Website:** publish the repository root with GitHub Pages from the `main` branch. In GitHub, open **Settings → Pages**, choose **Deploy from a branch**, then select `main` and `/ (root)`.
@@ -53,7 +61,7 @@ The map works without the AI assistant. If you fork this project, update the Wor
 
 - Open-Meteo data comes from weather models with grid cells several kilometers wide. These are town-level estimates, not block-level measurements.
 - Forecasts can differ from actual conditions. Follow official [PAGASA](https://www.pagasa.dost.gov.ph/) advisories and school or workplace guidance.
-- The AI assistant provides general forecast guidance, not medical advice, official warnings, or a guarantee that an activity is safe. Do not rely on it for emergency decisions.
+- The AI assistant is not medical advice, an official warning, or a guarantee that an activity is safe. Do not rely on it for emergency decisions.
 
 ## Data and attribution
 
