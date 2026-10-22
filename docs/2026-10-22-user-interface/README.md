@@ -30,6 +30,6 @@ Assistant answers are general forecast guidance only. The panel includes a medic
 
 ## Responsive and accessibility details
 
-The layout adapts to smaller screens. Navigation and assistant controls are native buttons with accessible names; the navigation can be reached by keyboard, and its reveal state is exposed with `aria-expanded`. Forecast loading and assistant status messages use status/live regions.
+The layout adapts to smaller screens. On phones, the forecast controls sit below the compact navigation, the place list becomes a scrollable bottom sheet, and map controls move above it so the map remains visible. The assistant opens in a near-full-width panel, and short landscape screens give it most of the viewport. Navigation and assistant controls are native buttons with accessible names; the navigation can be reached by keyboard, and its reveal state is exposed with `aria-expanded`. Forecast loading and assistant status messages use status/live regions.
 
 The map depends on a running web server. Opening the HTML directly with a `file://` URL can prevent the weather request from working. See [Run locally](../../README.md#run-locally).
