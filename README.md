@@ -47,6 +47,10 @@ Questions, recent conversation entries, and the selected forecast context are se
 
 The map works without the AI assistant. If you fork this project, update the Worker origin allowlist to your own GitHub Pages origin before deploying it.
 
+## Project documentation
+
+Browse the [documentation index](docs/README.md) for dated, topic-based guides to the project overview, forecast data, AI assistant, and user interface.
+
 ## Heat-index categories (°C)
 
 | Range | Category |
