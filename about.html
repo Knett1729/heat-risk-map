@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About Us | Heat Risk Map</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="map.html"><span class="brand-mark" aria-hidden="true">HR</span>Heat Risk Map</a>
+    <nav aria-label="Main navigation">
+      <a href="map.html">Map</a>
+      <a href="about.html" class="active">About Us</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <header class="page-header">
+      <p class="eyebrow">Project information</p>
+      <h1>About Heat Risk Map</h1>
+      <p>Purpose, methodology, and important context for interpreting the forecast.</p>
+    </header>
+
+    <h2>Purpose</h2>
+    <p>
+      Heat waves are one of the most dangerous weather hazards, and El Niño makes them worse.
+      Many people, especially farmers, outdoor workers, students, and the elderly, don't get
+      clear, local, easy-to-read heat warnings. Heat Risk Map turns open weather data into a
+      simple colored map and place-status list anyone can understand.
+    </p>
+
+    <h2>How it works</h2>
+    <p>
+      We take hourly temperature and relative humidity forecasts from Open-Meteo, compute the
+      heat index using the NWS Rothfusz formula, and classify it with PAGASA-style levels:
+      Caution, Extreme Caution, Danger, and Extreme Danger.
+    </p>
+
+    <h2>Limitations</h2>
+    <div class="cards">
+      <div class="card"><h3>Town-level only</h3><p>The weather data comes from models with a grid several kilometers wide, so it can't show differences between streets or barangays.</p></div>
+      <div class="card"><h3>Forecasts, not measurements</h3><p>Values are estimates and can differ from real conditions. Always follow official PAGASA advisories.</p></div>
+    </div>
+
+    <h2>Data and credits</h2>
+    <p>
+      Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>.
+      Map tiles © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors.
+      Maps powered by <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a>.
+    </p>
+
+    <h2>Open source</h2>
+    <p>
+      This project is open source under the MIT license, and contributions are welcome:
+      add more places, translate the interface to Cebuano or Filipino, or help build new features.
+    </p>
+    <p>
+      <a class="btn" href="https://github.com/YOUR_USERNAME/heat-risk-map" target="_blank" rel="noopener">View on GitHub</a>
+    </p>
+
+    <h2>Team</h2>
+    <p>Built by Madera, Cabuguas, and Neiri for Hacktoberfest.</p>
+  </main>
+</body>
+</html>
