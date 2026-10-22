@@ -49,7 +49,7 @@ The map works without the AI assistant. If you fork this project, update the Wor
 
 ## Project documentation
 
-Browse the [documentation index](docs/README.md) for dated, topic-based guides to the project overview, forecast data, AI assistant, and user interface.
+Browse the [documentation index](docs/README.md) for architecture and platform impact, requirements, forecast data, AI scope, project history, licensing, testing, demo instructions, and deployment. The repository also includes issue and pull-request templates and a code of conduct.
 
 ## Heat-index categories (°C)
 
@@ -73,4 +73,4 @@ Weather data by [Open-Meteo.com](https://open-meteo.com/). Its free API is for n
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Good first contributions include adding places, translating the interface to Cebuano or Filipino, adding a longer forecast view, and improving accessibility. Licensed under MIT.
+See [CONTRIBUTING.md](CONTRIBUTING.md). Good first contributions include adding places, translating the interface to Cebuano or Filipino, adding a longer forecast view, and improving accessibility. The project code is licensed under [MIT](LICENSE); see the [license and attribution guide](docs/2026-10-22-license-and-attribution/README.md) for third-party data and map terms.

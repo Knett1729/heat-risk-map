@@ -1,0 +1,33 @@
+name: Feature request
+description: Propose an improvement for Heat Risk Map.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: User need
+      description: Who would benefit, and what are they trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the desired behavior without prescribing unnecessary implementation details.
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Data, safety, accessibility, or privacy considerations
+      description: Note any effects on forecast interpretation, sensitive information, accessibility, or attribution.
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
