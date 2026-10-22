@@ -7,7 +7,6 @@ An open-source web map of the **heat index** (the "feels like" heat danger level
 - Town-level heat-index forecasts from Open-Meteo, displayed on a Leaflet map and in a place-by-place conditions panel.
 - PAGASA-style heat categories and a forecast-hour slider.
 - Optional AI heat-safety assistant, powered by a Cloudflare Worker and Workers AI.
-- Manual direct-sun exposure timer with configurable break reminders.
 - Compact navigation that hides when idle and reveals on hover, keyboard focus, or tap.
 
 ## How it works
@@ -17,8 +16,7 @@ An open-source web map of the **heat index** (the "feels like" heat danger level
 3. `js/heatindex.js` calculates heat index using the NWS Rothfusz regression and maps it to PAGASA-style categories.
 4. Leaflet displays the forecast; the slider changes the selected hour.
 5. Forecast data refreshes every five minutes, when the page becomes visible, and when the network reconnects. Open-Meteo uses weather models; it is not a live local sensor feed.
-6. The optional exposure timer is manual. It does not detect sunlight or personal conditions, and its reminders are not medical safety thresholds.
-7. The AI assistant sends the selected forecast context and conversation to the configured Cloudflare Worker. The Worker calls Workers AI and returns a short reply.
+6. The AI assistant sends the selected forecast context and conversation to the configured Cloudflare Worker. The Worker calls Workers AI and returns a short reply.
 
 ## Run locally
 

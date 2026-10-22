@@ -46,12 +46,6 @@ assistantForm.addEventListener("submit", async event => {
   const question = assistantInput.value.trim();
   if (!question) return;
 
-  const { API_URL, API_KEY, MODEL } = CONFIG.AI;
-  if (!API_URL || !MODEL || MODEL === "YOUR_LOCAL_MODEL") {
-    assistantStatus.textContent = "Configure the local model URL and model name in js/config.js before asking a question.";
-    return;
-  }
-
   assistantHistory.push({ role: "user", content: question });
   addAssistantMessage(question, "user");
   assistantInput.value = "";
@@ -62,30 +56,11 @@ assistantForm.addEventListener("submit", async event => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 60000);
   try {
-    const messages = [
-      {
-        role: "system",
-        content: "You are a cautious heat-safety assistant for families. Use only the provided heat forecast context for local conditions. Explain that heat index is a town-level estimate, not a school-site measurement, and that actual safety depends on shade, exertion, hydration, health, and school precautions. Avoid giving a definitive guarantee that an activity is safe. Offer practical heat precautions, and advise checking official PAGASA advisories and school guidance. If the user does not name a town, ask which town they mean. Be concise and clear."
-      },
-      { role: "system", content: `Selected map forecast context:\n${window.getHeatAssistantContext()}` },
-      ...assistantHistory
-    ];
-    const headers = { "Content-Type": "application/json" };
-    if (API_KEY && API_KEY !== "YOUR_API_KEY") headers.Authorization = `Bearer ${API_KEY}`;
-
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ model: MODEL, messages, temperature: 0.4 }),
-      signal: controller.signal
-    });
-    if (!response.ok) throw new Error(`Local model returned HTTP ${response.status}.`);
-
-    const result = await response.json();
-    const answer = result.choices?.[0]?.message?.content;
-    if (typeof answer !== "string" || !answer.trim()) {
-      throw new Error("The local model response did not contain a chat answer.");
-    }
+    const answer = await askHostedModel(
+      window.getHeatAssistantContext(),
+      assistantHistory,
+      controller.signal
+    );
 
     assistantHistory.push({ role: "assistant", content: answer });
     addAssistantMessage(answer, "bot");
@@ -93,9 +68,9 @@ assistantForm.addEventListener("submit", async event => {
   } catch (error) {
     assistantHistory.pop();
     const message = error.name === "AbortError"
-      ? "The local model request timed out. Check that your model is running, then try again."
+      ? "The AI request timed out. Please try again."
       : error instanceof TypeError
-        ? "The browser could not access the local model. It may be blocking this page's origin with CORS; allow the map's exact origin and OPTIONS requests in your model server."
+        ? "The browser could not reach the AI service. Check that the Worker is deployed and allows this site's origin."
         : error.message;
     assistantStatus.textContent = message;
     addAssistantMessage(message, "bot");
