@@ -20,6 +20,14 @@ An open-source web map of the **heat index** (the "feels like" heat danger level
 5. Forecast data refreshes every five minutes, when the page becomes visible, and when the network reconnects. Open-Meteo uses weather models; it is not a live local sensor feed.
 6. The AI assistant sends the selected forecast context and conversation to the configured Cloudflare Worker. The Worker calls Workers AI and returns a short reply.
 
+## Why this solution is effective
+
+Heat Risk Map turns hourly temperature and humidity forecasts into heat-index categories people can explore by town and forecast hour. Showing the same conditions on a map and in a town-by-town panel makes regional differences easier to compare than raw weather values alone, while the slider helps users consider how conditions may change over the next 48 hours. This supports practical planning, such as choosing a cooler time for outdoor activities; it does not determine whether an activity is safe.
+
+The implementation fits the problem: Open-Meteo supplies the forecast inputs, a small browser-side calculation derives heat index, and Leaflet presents the results without requiring a project backend or database for the core map. The separate Cloudflare Worker keeps the optional AI feature independent, so map and forecast functionality remain available if the assistant is unavailable. These choices keep deployment simple while making the data source, calculation, and service boundaries visible.
+
+The project has not yet established measured health outcomes or user-impact metrics. Its effectiveness is therefore demonstrated by the working forecast experience and its documented limitations, not by a claim that it reduces heat illness. Forecasts are model-based estimates, and users should continue to follow official PAGASA advisories and local guidance.
+
 ## Run locally
 
 Do not open `index.html` or `map.html` directly from `file://`; browsers block the weather API request from local files.
